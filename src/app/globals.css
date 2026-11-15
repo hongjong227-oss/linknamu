@@ -1,9 +1,14 @@
 @import "tailwindcss";
 
 @theme inline {
-  --font-sans: var(--font-noto-sans-kr), system-ui, sans-serif;
+  --font-sans: var(--font-pretendard), system-ui, -apple-system, sans-serif;
 }
 
 body {
-  font-family: var(--font-sans);
+  /* @theme inline 값은 CSS 변수로 출력되지 않으므로 var(--font-sans) 대신 직접 지정 */
+  font-family: var(--font-pretendard), system-ui, -apple-system, sans-serif;
+  letter-spacing: -0.01em;
+  /* 크림 → 연한 살구색. 스크롤해도 배경이 끊기지 않도록 고정 */
+  background: linear-gradient(170deg, #fdf8ef 0%, #fcefe3 55%, #f9e1d0 100%) fixed;
+  color: #3b2f2a;
 }
