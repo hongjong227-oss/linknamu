@@ -1,3 +1,4 @@
+import { connection } from "next/server";
 import { profile } from "@/data/profile";
 import { getClicksCollection } from "@/lib/mongodb";
 
@@ -25,8 +26,10 @@ export async function POST(request: Request) {
   }
 }
 
-// 링크별 클릭 수 조회
+// 링크별 클릭 수 조회. 응답 예: { "instagram": 42, "blog": 7 }
 export async function GET() {
+  // Cache Components 환경에서 빌드 때 미리 만들어지지 않고 매 요청마다 최신 값을 읽도록 명시
+  await connection();
   try {
     const clicks = await getClicksCollection();
     const docs = await clicks.find({ _id: { $in: [...linkIds] } }).toArray();

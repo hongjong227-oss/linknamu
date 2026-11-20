@@ -8,7 +8,11 @@ export function getMongoClient(): Promise<MongoClient> {
   if (!uri) {
     throw new Error("MONGODB_URI 환경 변수가 설정되지 않았습니다 (.env.local 확인)");
   }
-  globalForMongo.mongoClient ??= new MongoClient(uri).connect();
+  globalForMongo.mongoClient ??= new MongoClient(uri).connect().catch((error) => {
+    // 연결에 실패한 Promise가 계속 재사용되지 않도록 비워서 다음 요청 때 다시 시도
+    globalForMongo.mongoClient = undefined;
+    throw error;
+  });
   return globalForMongo.mongoClient;
 }
 
